@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise</title>
+  </head>
+  <body>
+    <script src="./Promise.js"></script>
+    <script>
+      // then方法的核心是为了实现两点
+      // 1.resolve的值在下一个then的回调中会出现
+      // 2.then的返回的promise会继承then回调函数返回的promise
+      const promise = new MyPromise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(2);
+        }, 2000);
+      });
+      promise
+        .then((value) => {
+          console.log("value: ", value);
+          // 2
+          // 第一个目的已经达到
+          return new Promise((resolveInner) => {
+            resolveInner(6);
+          });
+        })
+        .then((v2) => {
+          console.log("v2: ", v2);
+          // 6
+          // 第二个目的达到
+        });
+    </script>
+  </body>
+</html>
